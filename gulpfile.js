@@ -10,7 +10,7 @@ var runSequence = require('gulp4-run-sequence');
 gulp.task('browsersync', function () {
   browserSync({
     server: {
-      baseDir: 'app',
+      baseDir: './',
     },
   });
 });
@@ -33,20 +33,6 @@ gulp.task('watch', function () {
   gulp.watch('app/js/**/*.js', browserSync.reload);
 });
 
-gulp.task('useref', function () {
-  return gulp
-    .src('app/*.html')
-    .pipe(useref())
-    .pipe(gulpIf('*.js', uglify()))
-    .pipe(gulpIf('*.css', cssnano()))
-    .pipe(gulp.dest('dist'));
-});
-
-/* Build */
 gulp.task('default', function (callback) {
   runSequence(['sass', 'browsersync'], 'watch', callback);
-});
-
-gulp.task('build', function (callback) {
-  runSequence('sass', ['useref'], callback);
 });
